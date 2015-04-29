@@ -1,0 +1,287 @@
+fon = #589cef;
+
+.data-pick {
+    position: relative;
+    width: 155px;
+    &__input{
+        width: 155px;
+    }
+    &__date-picker {
+        font: 12px Verdana;
+        height: 250px;
+        width: 400px;
+        overflow: hidden;
+        user-select: none;
+        box-shadow: 0 3px 5px rgba(0, 0, 0, .35);
+        color: #333;
+        position: absolute;
+        border-radius: 2px;
+        box-sizing: border-box;
+        background: #fff;
+        cursor: default;
+        top: 30px;
+        left: 0;
+    }
+    &__view {
+        width: 341px;
+        height: 250px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        overflow: hidden;
+        border-bottom: 3px solid rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+        z-index: 1;
+        cursor: default;
+    }
+
+    &__settings {
+        background: fon;
+        width: 153px;
+        height: 250px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: #fff;
+        text-shadow: 0 0 2px #000000;
+        box-sizing: border-box;
+        cursor: default;
+    }
+    &__month {
+        height: 194px;
+        width: 247px
+    }
+    &__month:after {
+        content: "";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+    }
+
+    &__months-list {
+        text-align: left;
+        height: 197px;
+        width: 94px;
+        position: absolute;
+        top: 7px;
+        right: 0;
+        border-left: 1px solid rgba(255, 255, 255, .1);
+        box-sizing: border-box;
+        cursor: default;
+    }
+    &__title-month {
+        margin-left: 7px;
+        cursor: default;
+    }
+    &__years-list {
+        width: 59px;
+        height: 211px;
+        position: absolute;
+        text-align: center;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+        cursor: default;
+        &:before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 2px;
+            right: 25px;
+            border-bottom: transparent;
+            border-top: 4px solid rgba(255, 255, 255, 0.50);
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            box-shadow: 0 -18px 8px 18px fon;
+            background: fon;
+        }
+        &:after {
+            content: "";
+            display: block;
+            position: absolute;
+            bottom: 2px;
+            right: 25px;
+            border-bottom: 4px solid rgba(255, 255, 255, 0.50);
+            border-top: transparent;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            box-shadow: 0 18px 8px 18px fon;
+            background: fon;
+        }
+
+    }
+    &__years {
+        padding: 7px 20px 27px 0;
+        overflow: scroll;
+        height: 197px;
+        width: 59px;
+        cursor: pointer;
+    }
+    &__year {
+        height: 9%;
+        width: 59px;
+        cursor: pointer;
+        &:hover {
+            background: #5ca7ff;
+        }
+        &._active {
+            &_on {
+                background: #fff;
+                color: #333;
+                text-shadow: none;
+            }
+            &_off {
+
+            }
+        }
+
+    }
+    &__change {
+        width: 100%;
+        height: 39px;
+        position absolute;
+        bottom: 0;
+        z-index: 1;
+        left: 0;
+        margin: 0;
+        padding: 0;
+        background: fon;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        box-sizing: border-box;
+        border-top: 1px solid rgba(255, 255, 255, .1);
+        border-bottom: 3px solid rgba(0, 0, 0, 0.1);
+        color: #fff;
+        text-shadow: 0 0 2px #393939;
+        outline: none;
+        &:hover {
+            background: #5ca7ff;
+        }
+        &:active {
+            border-top: 2px solid rgba(0, 0, 0, 0.1);
+            height: 38px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 -1px 0 0 rgba(255, 255, 255, .05),
+            inset -1px 0 0 0 rgba(0, 0, 0, .1);
+        }
+    }
+    &__title-month {
+        height: 8.3%;
+        cursor: default;
+    }
+    &__calendar {
+        overflow: scroll;
+        text-align: center;
+        height: 100%;
+        width: 247px;
+        padding: 0 20px 20px 94px;
+        cursor: default;
+    }
+
+    &__day {
+        float: left;
+        margin-left: 0;
+        width: 14.285714285714286%;
+        display: inline-block;
+        line-height: 22px;
+        position: relative;
+        cursor: pointer;
+        box-sizing: border-box;
+        border-radius: 2px;
+        &:hover {
+            background: #5194e1;
+            color: #fff;
+            text-shadow: 0 0 2px #000000;
+        }
+        &._on {
+            box-shadow: 0 0 0 1px #5194e1;
+        }
+
+        &._push {
+            &_monday {
+                margin-left: 0;
+            }
+
+            &_tuesday {
+                margin-left: 14.285714285714286%;
+            }
+
+            &_wednesday {
+                margin-left: 28.571428571428573%;
+            }
+
+            &_thursday {
+                margin-left: 42.85714285714286%;
+            }
+
+            &_friday {
+                margin-left: 57.142857142857146%;
+            }
+
+            &_saturday {
+                margin-left: 71.42857142857143%;
+            }
+
+            &_sunday {
+                margin-left: 85.71428571428572%;
+            }
+        }
+
+    }
+
+    &__selector {
+        position: absolute;
+        height: 0;
+        width: 0;
+        top: 0;
+        right: -1px;
+        border-bottom: 8px solid transparent;
+        border-top: 8px solid transparent;
+        border-left: 8px solid transparent;
+        border-right: 8px solid #fff;
+        cursor: default;
+    }
+
+    &__month:first-child {
+        .data-pick__month-title {
+            border: 0;
+        }
+    }
+    &__month-title {
+        font-size: 14px;
+        font-family: Arial;
+        padding: 9px 0 14px;
+        cursor: default;
+        margin: 5px 7px 0;
+        border-top: 1px solid #f6f6f6;
+    }
+
+    &__week-day {
+        float: left;
+        margin-left: 0;
+        width: 14.285714285714286%;
+        display: inline-block;
+        line-height: 22px;
+        position: relative;
+        cursor: default;
+        box-sizing: border-box;
+        border-radius: 2px;
+        font-size: 10px;
+        color: #a6a6a6;
+    }
+    &__week-day-free {
+        float: left;
+        margin-left: 0;
+        width: 14.285714285714286%;
+        display: inline-block;
+        line-height: 22px;
+        position: relative;
+        cursor: default;
+        box-sizing: border-box;
+        border-radius: 2px;
+        font-size: 10px;
+        color: #a6373b;
+    }
+}

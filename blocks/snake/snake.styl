@@ -1,0 +1,195 @@
+box_shadow_generate(param) {
+    box-shadow: param, 0 3px 6px rgba(0, 0, 0, .3);
+}
+
+_duration = 4s
+
+snake_box() {
+    width: 6px;
+    height: 6px;
+    background: #8bc34a;
+    box_shadow_generate(0 1px 0 0 #33691e);
+    border-radius: 2px;
+    position: absolute;
+    animation-name: move;
+    animation-duration: _duration;
+    animation-iteration-count: infinite;
+}
+
+.snake {
+
+    position fixed
+    top 0
+    left: 0
+    background rgba(255, 255, 255, .8);
+    width: 100%;
+    height: 100%;
+    z-index 4;
+    display none
+
+    &__message {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        font-size: 14px;
+        color: #555;
+        width: 100%;
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    &__wrapper {
+        width: 24px;
+        height: 24px;
+        /*zoom: 1.5;*/
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -12px 0 0 -12px;
+    }
+
+    &__box0 {
+        snake_box()
+        background: #558b2f;
+        top: 6px;
+        left: 18px;
+    }
+    &__box1 {
+        snake_box()
+        top: 6px;
+        left: 12px;
+        animation-name: move, move2;
+        animation-delay: (_duration/ 16);
+    }
+    &__box2 {
+        snake_box()
+        top: 6px;
+        left: 6px;
+        animation-name: move, move3;
+        animation-delay: (_duration/ 16) * 2;
+    }
+    &__box3 {
+        snake_box()
+        top: 6px;
+        left: 0;
+        animation-name: move, move4;
+        animation-delay: (_duration/ 16) * 3;
+    }
+
+    &._ready {
+        display block;
+    }
+
+}
+
+@keyframes move2 {
+    0%, 18.75% {
+        z-index: 0
+    }
+    25%, 50% {
+        z-index: -1
+    }
+    56.25%, 100% {
+        z-index 0
+    }
+}
+
+@keyframes move3 {
+    0%, 18.75% {
+        z-index: 0
+    }
+    25%, 50% {
+        z-index: -2
+    }
+    56.25%, 100% {
+        z-index 0
+    }
+}
+
+@keyframes move4 {
+    0%, 18.75% {
+        z-index: 0
+    }
+    25%, 50% {
+        z-index: -3
+    }
+    56.25%, 100% {
+        z-index 0
+    }
+}
+
+@keyframes move {
+    0% {
+        top: 6px;
+        left: 18px;
+    }
+    6.25% {
+        top: 0;
+        left: 18px;
+    }
+    12.5% {
+        top: 0;
+        left: 12px;
+    }
+    18.75% {
+        top: 0;
+        left: 6px;
+    }
+    25% {
+        top: 0;
+        left: 0;
+    }
+    31.25% {
+        top: 6px;
+        left: 0;
+    }
+    37.5% {
+        top: 12px;
+        left: 0;
+    }
+    43.75% {
+        top: 18px;
+        left: 0;
+    }
+    50% {
+        top: 18px;
+        left: 6px;
+    }
+    56.25% {
+        top: 18px;
+        left: 12px;
+    }
+    62.5% {
+        top: 18px;
+        left: 18px;
+    }
+    68.75% {
+        top: 12px;
+        left: 18px;
+    }
+    75% {
+        top: 12px;
+        left: 12px;
+    }
+    81.25% {
+        top: 12px;
+        left: 6px;
+    }
+    87.5% {
+        top: 6px;
+        left: 6px;
+    }
+    93.75% {
+        top: 6px;
+        left: 12px;
+    }
+    100% {
+        top: 6px;
+        left: 18px;
+    }
+
+}
+
+
+
+

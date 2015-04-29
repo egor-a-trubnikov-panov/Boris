@@ -1,0 +1,162 @@
+container()
+    box-sizing: border-box;
+    display: flex;
+    flex: 0 1 auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+// строка
+row()
+    container()
+    margin-bottom: 15px;
+
+//колонка от 1 до 12
+column_(num)
+    box-sizing: border-box;
+    display: flex;
+    flex: 0 1 auto;
+    flex-direction: column;
+    flex-grow: 0;
+    flex-shrink: 0;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    flex-basis num * (100 / 12) %
+    max-width num * (100 / 12) %
+    if !num
+        flex-grow: 1;
+        flex-basis: 0;
+        max-width: 100%;
+
+// сдвиг колонки от 1 до 11
+column-push_(num)
+    margin-left: num * (100 / 12) %
+
+alignment-start_()
+    justify-content: flex-start;
+    text-align: start;
+
+alignment-center_()
+    justify-content: center;
+    text-align: center;
+
+alignment-end_()
+    justify-content: flex-end;
+    text-align: end;
+
+alignment-top_()
+    align-items: flex-start;
+
+alignment-middle_()
+    align-items: center;
+
+alignment-bottom_()
+    align-items: flex-end;
+
+space-around_()
+    justify-content: space-around;
+
+space-between_()
+    justify-content: space-between;
+
+reverse_()
+    flex-direction: column-reverse;
+
+//сделать первым
+first_()
+    order: -1;
+
+//сделать последним
+last_()
+    order: 1;
+
+// пользовать это
+col(num, size)
+    if size
+        @media only screen and (min-width: size)
+            column_(num)
+    else
+        column_(num)
+
+col-push(num, size)
+    if size
+        @media only screen and (min-width: size)
+            column-push_(num)
+    else
+        column-push_(num)
+
+align-start(size)
+    if size
+        @media only screen and (min-width: size)
+            alignment-start_()
+    else
+        alignment-start_()
+
+align-center(size)
+    if size
+        @media only screen and (min-width: size)
+            alignment-center_()
+    else
+        alignment-center_()
+
+align-end(size)
+    if size
+        @media only screen and (min-width: size)
+            alignment-end_()
+    else
+        alignment-end_()
+
+align-top(size)
+    if size
+        @media only screen and (min-width: size)
+            alignment-top_()
+    else
+        alignment-top_()
+
+align-middle(size)
+    if size
+        @media only screen and (min-width: size)
+            alignment-middle_()
+    else
+        alignment-middle_()
+
+align-bottom(size)
+    if size
+        @media only screen and (min-width: size)
+            alignment-bottom_()
+    else
+        alignment-bottom_()
+
+space-around(size)
+    if size
+        @media only screen and (min-width: size)
+            space-around_()
+    else
+        space-around_()
+
+space-between(size)
+    if size
+        @media only screen and (min-width: size)
+            space-between_()
+    else
+        space-between_()
+
+reverse(size)
+    if size
+        @media only screen and (min-width: size)
+            reverse_()
+    else
+        reverse_()
+
+first(size)
+    if size
+        @media only screen and (min-width: size)
+            first_()
+    else
+        first_()
+
+last(size)
+    if size
+        @media only screen and (min-width: size)
+            last_()
+    else
+        last_()
