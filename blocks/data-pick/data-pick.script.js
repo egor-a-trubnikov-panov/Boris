@@ -5,64 +5,67 @@ modules.define(
 
         var inheritable = {
             __constructor: function () {
-
-                this.__base.apply(this, arguments); // забираем методы родителя
-
-
-                this.block = this.getDomNode();
-                this.elem_calendar = this._findElement("calendar");
-                this.elem_selector = this._findElement("selector");
-                this.elem_view = this._findElement("view");
-
-                this.year = null;
-                this.month = null;
-                this.date = null;
-                this.scrollable = true;
+                var self = this;
+                self.__base.apply(self, arguments); // забираем методы родителя
 
 
-                this.MONTH_SELECT_HEIGHT = 16;
-                this.MONTH_LIST_HEIGHT = 197;
-                this.MONTH_SCROLL_MAX_HEIGHT = this.MONTH_LIST_HEIGHT - this.MONTH_SELECT_HEIGHT;
-                this.CALENDAR_SCROLL_HEIGHT = this.elem_calendar.prop('scrollHeight');
-                this.HEIGHT = 247;
-                this.CALENDAR_BOTTOM_PADDING = 20;
-                this.MONTH_LIST_TOP_AND_BOTTOM = 14;
+                self.block = self.getDomNode();
+                self.elem_calendar = self._findElement("calendar");
+                self.elem_selector = self._findElement("selector");
+                self.elem_view = self._findElement("view");
+
+                self.year = null;
+                self.month = null;
+                self.date = null;
+                self.scrollable = true;
 
 
-                this._bindTo(this.elem_calendar, 'scroll', function () {
+                self.MONTH_SELECT_HEIGHT = 16;
+                self.MONTH_LIST_HEIGHT = 197;
+                self.MONTH_SCROLL_MAX_HEIGHT = self.MONTH_LIST_HEIGHT - self.MONTH_SELECT_HEIGHT;
+                self.CALENDAR_SCROLL_HEIGHT = self.elem_calendar.prop('scrollHeight');
+                self.HEIGHT = 247;
+                self.CALENDAR_BOTTOM_PADDING = 20;
+                self.MONTH_LIST_TOP_AND_BOTTOM = 14;
 
-                    if (this.scrollable) {
-                        var scrollTop = (this.elem_calendar.scrollTop() / ((this.CALENDAR_SCROLL_HEIGHT - this.CALENDAR_BOTTOM_PADDING - this.HEIGHT) / 100)) * (this.MONTH_SCROLL_MAX_HEIGHT / 100);
-                        if (scrollTop > this.MONTH_SCROLL_MAX_HEIGHT) {
-                            scrollTop = this.MONTH_SCROLL_MAX_HEIGHT;
+
+                self._bindTo(self.elem_calendar, 'scroll', function () {
+
+                    if (self.scrollable) {
+                        var scrollTop = (self.elem_calendar.scrollTop() / ((self.CALENDAR_SCROLL_HEIGHT - self.CALENDAR_BOTTOM_PADDING - self.HEIGHT) / 100)) * (self.MONTH_SCROLL_MAX_HEIGHT / 100);
+                        if (scrollTop > self.MONTH_SCROLL_MAX_HEIGHT) {
+                            scrollTop = self.MONTH_SCROLL_MAX_HEIGHT;
                         }
-                        this.elem_selector.css("top", scrollTop + "px")
+                        self.elem_selector.css("top", scrollTop + "px")
                     }
                 });
             },
             MonthSelectDrag: function () {
-                this.scrollable = false;
-                var
-                    top = window.event.pageY - this.block.offset().top - this.MONTH_LIST_TOP_AND_BOTTOM;
+                var self = this,
+                    top = window.event.pageY - self.block.offset().top - self.MONTH_LIST_TOP_AND_BOTTOM;
+
+                self.scrollable = false;
 
                 if (top < 0) top = 0;
 
-                this.elem_calendar
-                    .prop("scrollTop", ((this.CALENDAR_SCROLL_HEIGHT - this.CALENDAR_BOTTOM_PADDING) / 100) * (top / (this.MONTH_LIST_HEIGHT / 100)));
+                self.elem_calendar
+                    .prop("scrollTop", ((self.CALENDAR_SCROLL_HEIGHT - self.CALENDAR_BOTTOM_PADDING) / 100) * (top / (self.MONTH_LIST_HEIGHT / 100)));
 
-                if (top > (this.MONTH_LIST_HEIGHT - this.MONTH_SELECT_HEIGHT)) {
-                    top = this.MONTH_LIST_HEIGHT - this.MONTH_SELECT_HEIGHT;
+                if (top > (self.MONTH_LIST_HEIGHT - self.MONTH_SELECT_HEIGHT)) {
+                    top = self.MONTH_LIST_HEIGHT - self.MONTH_SELECT_HEIGHT;
                 }
 
-                this.elem_selector.css("top", top + "px");
+                self.elem_selector.css("top", top + "px");
             },
             onMouseMove: function () {
-                this.MonthSelectDrag();
-                this._bindTo(this.elem_view, 'mousemove', this.MonthSelectDrag);
+                var self = this;
+                self.MonthSelectDrag();
+                self._bindTo(self.elem_view, 'mousemove', self.MonthSelectDrag);
             },
             offMouseMove: function () {
-                this.scrollable = true;
-                this._unbindFrom(this.elem_view, 'mousemove', this.MonthSelectDrag);
+                var self = this;
+                self.scrollable = true;
+                self._unbindFrom(self.elem_view, 'mousemove', self.MonthSelectDrag);
             }
         };
 
@@ -72,35 +75,39 @@ modules.define(
                 return 'data-pick';
             },
             _liveInit: function () {
+                var self = this;
 
-                this._liveBindToElement("year", 'click', function (e) {
-                    this.year = $(e.target).text();
-                    this._update({
+                self._liveBindToElement("year", 'click', function (e) {
+                    self.date = self.date || new Date().getDate();
+                    self.month = self.month || new Date().getMonth() + 1;
+                    self.year = $(e.target).text();
+                    self._update({
                         block: 'data-pick',
-                        date: this.date + "," + this.month + "," + this.year
+                        date: self.date + "," + self.month + "," + self.year
                     })
                 });
 
-                this._liveBindToElement("day", 'click', function (e) {
-                    this.date = $(e.target).text();
-                    this.month = $(e.target).data("id");
-                    this._update({
+                self._liveBindToElement("day", 'click', function (e) {
+                    self.date = $(e.target).text();
+                    self.month = $(e.target).data("id") + 1;
+                    self.year = self.year || new Date().getFullYear();
+                    self._update({
                         block: 'data-pick',
-                        date: this.date + "," + this.month + "," + this.year
+                        date: self.date + "," + self.month + "," + self.year
                     });
-                    console.log(this.date,this.month,this.year);
+                    console.log(self.date, self.month, self.year);
                 });
 
-                this._liveBind('mousedown', function () {
-                    var clickX = window.event.pageX - this.block.offset().left;
+                self._liveBind('mousedown', function () {
+                    var clickX = window.event.pageX - self.block.offset().left;
                     // если нажатие на полоске с месяцами
                     if (clickX > 59 && clickX < 153) {
-                        this.onMouseMove()
+                        self.onMouseMove()
                     }
                 });
 
-                this._liveBind('mouseup mouseleave', function () {
-                    this.offMouseMove();
+                self._liveBind('mouseup mouseleave', function () {
+                    self.offMouseMove();
                 });
 
                 return false;

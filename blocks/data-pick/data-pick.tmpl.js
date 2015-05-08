@@ -4,7 +4,7 @@ btr.match('data-pick', function (ctx) {
 
     var data = ctx.getParam('date'),
         date = new Date();
-
+    console.log(data);
     if (data) {
         var d = data.split(",");
         if (d.length != 3) {
@@ -14,7 +14,7 @@ btr.match('data-pick', function (ctx) {
         date.setMonth(d[1] - 1);
         date.setFullYear(d[2]);
     }
-
+    console.log(date);
     var months = [
         {
             name: 'Январь',
@@ -270,13 +270,14 @@ btr.match('data-pick__days', function (ctx) {
         selected = ctx.getParam("selected"),
         selectedDate = date.getDate(),
         indent = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
-        id = ctx.getParam("id");
-
+        id = ctx.getParam("id"),
+        push_date = new Date(date);
+    push_date.setDate(1);
     for (var i = 1, elems = []; i <= count; i++) {
         if (i == 1) {
             elems.push({
                 elem: "day",
-                push: indent[date.getDay() - 1],
+                push: indent[push_date.getDay() - 1],
                 value: i,
                 selected: selectedDate == i ? selected : false,
                 id: id
