@@ -1,5 +1,4 @@
 var gulp = require('gulp'),
-    bem = require('gulp-bem'),
     btr = require('gulp-btr'),
     concat = require('gulp-concat'),
     del = require('del'),
@@ -7,34 +6,13 @@ var gulp = require('gulp'),
     stylus = require('gulp-stylus'),
     autoprefixer = require('gulp-autoprefixer'),
     csso = require('gulp-csso'),
-    uglyfly = require('gulp-uglyfly'),
-    mocha = require('gulp-mocha'),
-    sourcemaps = require('gulp-sourcemaps'),
-    runSequence = require('run-sequence'),
-    deps;
-
-var levels = [
-    'core',
-    'blocks',
-    'pages'
-];
-
-/**
- * Сборка зависимостей
- * */
-gulp.task('deps', function (done) {
-    var tree = bem.objects(levels)
-        .pipe(bem.deps())
-        .pipe(bem.tree());
-    deps = tree.deps('pages/index');
-    done();
-});
+    runSequence = require('run-sequence');
 
 /**
  * Сборка Stylus
  * */
 gulp.task('styl', function () {
-    return deps.src('{bem}.styl')
+    return gulp.src('./src/**/*.styl')
         .pipe(concat('index.styl'))
         .pipe(stylus())
         .pipe(autoprefixer({
@@ -50,9 +28,8 @@ gulp.task('styl', function () {
  * Сборка js
  * */
 gulp.task('js', function () {
-    return deps.src(['{bem}.script.js','{bem}.tmpl.js'])
+    return deps.src(['./src/**.*.script.js','./src/**/*.tmpl.js'])
         .pipe(concat('index.js'))
-        //.pipe(uglyfly())
         .pipe(gulp.dest('./dist'))
         .pipe(connect.reload());
 });
@@ -61,10 +38,10 @@ gulp.task('js', function () {
  * Сборка html
  * */
 gulp.task('html', function () {
-    delete require.cache[require.resolve('./pages/index/index.json.js')];
-    return deps.src('{bem}.tmpl.js')
+    delete require.cache[require.resolve('./src/pages/index/index.json.js')];
+    return gulp.src('./src/**/*.tmpl.js')
         .pipe(concat('tmpl.js'))
-        .pipe(btr(require('./pages/index/index.json.js'), 'index.html'))
+        .pipe(btr(require('./src/pages/index/index.json.js'), 'index.html'))
         .pipe(gulp.dest('./dist'))
         .pipe(connect.reload());
 });
@@ -73,10 +50,9 @@ gulp.task('html', function () {
  * Собираем картинки
  * */
 gulp.task('img', function () {
-    return deps.src(['*.svg', '*.png'])
+    return gulp.src(['./src/**/*.svg', './src/**/*.png'])
         .pipe(gulp.dest('./dist/img'))
 });
-
 
 /**
  * Удаляет картинки
@@ -92,25 +68,15 @@ gulp.task('clean_all', function (cb) {
     del(['./dist/'], cb);
 });
 
-
 /**
  * Следит за изменениями в шаблонах
  * */
 gulp.task('watch_tmpl', function () {
     return gulp.watch([
-        '{blocks,pages}/**/*.tmpl.js',
-        '{blocks,pages}/**/*.json.js'
+        './src/**/*.tmpl.js',
+        './src/**/*.json.js'
     ], function () {
-        runSequence('deps', 'html')
-    });
-});
-
-/**
- * Следит за изменениями в зависимостей
- * */
-gulp.task('watch_deps', function () {
-    return gulp.watch('{blocks,pages}/**/*.deps.js', function () {
-        runSequence('clean_all', 'deps', 'build')
+        runSequence('html')
     });
 });
 
@@ -118,8 +84,8 @@ gulp.task('watch_deps', function () {
  * Следит за изменениями javaScript
  * */
 gulp.task('watch_js', function () {
-    return gulp.watch('{blocks,pages}/**/*.script.js', function () {
-        runSequence('deps', 'js')
+    return gulp.watch('./src/**/*.script.js', function () {
+        runSequence('js')
     });
 });
 
@@ -127,9 +93,8 @@ gulp.task('watch_js', function () {
  * Следит за изменениями стилей
  * */
 gulp.task('watch_css', function () {
-    return gulp.watch('{blocks,pages}/**/*.styl', function () {
-        runSequence('deps', 'styl');
-        runSequence('clean_img','deps', 'img')
+    return gulp.watch('./src/**/*.styl', function () {
+        runSequence('styl','clean_img','img');
     });
 });
 
@@ -137,9 +102,9 @@ gulp.task('watch_css', function () {
  * Следит за изменениями картинок
  * */
 gulp.task('watch_img', function () {
-    return gulp.watch(['{blocks,pages}/**/*.png', '{blocks,pages}/**/*.svg'],
+    return gulp.watch(['./src/**/*.png', './src/**/*.svg'],
         function () {
-            runSequence('clean_img','deps', 'img')
+            runSequence('clean_img', 'img')
         });
 });
 
@@ -159,4 +124,4 @@ gulp.task('connect', function () {
  * */
 gulp.task('build', ['html', 'styl', 'js', 'img']);
 
-gulp.task('default', ['clean_all', 'deps', 'build', 'connect', 'watch_js', 'watch_css', 'watch_deps', 'watch_tmpl', 'watch_img']);
+gulp.task('dev', ['clean_all', 'build', 'connect', 'watch_js', 'watch_css', 'watch_deps', 'watch_tmpl', 'watch_img']);
